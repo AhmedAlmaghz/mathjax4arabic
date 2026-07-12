@@ -1,0 +1,19 @@
+@import "tailwindcss";
+@import "../public/arabic-mathjax.css";
+
+@theme {
+  --font-sans: "Tajawal", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+body {
+  font-family: "Tajawal", ui-sans-serif, system-ui, sans-serif;
+}
+
+mjx-mtext,
+mjx-mtext > mjx-utext,
+mjx-container mjx-mtext,
+.MathJax mjx-mtext {
+  font-family: "Aref Ruqaa", "Amiri", serif !important;
+  font-style: normal !important;
+}

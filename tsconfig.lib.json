@@ -1,0 +1,15 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "declarationMap": true,
+        "outDir": "dist",
+        "noEmit": false,
+        "allowImportingTsExtensions": false
+    },
+    "include": [
+        "src/lib/arabic-mathjax.ts",
+        "src/lib/browser.ts"
+    ]
+}

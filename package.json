@@ -1,0 +1,55 @@
+{
+  "name": "arabic-mathjax",
+  "version": "4.1.0",
+  "description": "Arabic preprocessing helpers and RTL rendering support for MathJax v4.",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/arabic-mathjax.cjs",
+  "module": "./dist/arabic-mathjax.js",
+  "types": "./dist/arabic-mathjax.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/arabic-mathjax.d.ts",
+      "import": "./dist/arabic-mathjax.js",
+      "require": "./dist/arabic-mathjax.cjs"
+    },
+    "./browser": {
+      "types": "./dist/browser.d.ts",
+      "import": "./dist/browser.js"
+    },
+    "./dist/arabic-mathjax.css": "./dist/arabic-mathjax.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run build:lib && npm run build:demo",
+    "build:demo": "vite build",
+    "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json && node scripts/copy-assets.mjs",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "clsx": "2.1.1",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "tailwind-merge": "3.4.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.1.17",
+    "@types/node": "22.19.17",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.1.1",
+    "tailwindcss": "4.1.17",
+    "typescript": "5.9.3",
+    "vite": "7.3.2",
+    "vite-plugin-singlefile": "2.3.0",
+    "vitest": "3.2.4"
+  }
+}
