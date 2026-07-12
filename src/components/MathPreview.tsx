@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useMathJaxReady } from "../hooks/useMathJaxReady";
-import ArabicMathJax from "../lib/arabic-mathjax";
+import ArabicMathJax from "../lib/mathjax4arabic";
 import { cn } from "../utils/cn";
 import type { MathFont } from "../lib/fonts";
 

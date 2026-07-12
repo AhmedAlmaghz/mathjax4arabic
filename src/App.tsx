@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import ArabicMathJax from "./lib/arabic-mathjax";
+import ArabicMathJax from "./lib/mathjax4arabic";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Playground from "./components/Playground";

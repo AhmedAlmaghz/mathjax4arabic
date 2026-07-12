@@ -1,5 +1,5 @@
 /*!
- * Arabic MathJax v4  —  https://github.com/OmarIthawi/arabic-mathjax (rewrite)
+ * Arabic MathJax v4  —  https://github.com/AhmedAlmaghz/mathjax4arabic (rewrite)
  * -------------------------------------------------------------------------
  * A modern, dependency-free re-implementation of the "arabic-mathjax"
  * MathJax v2 extension, redesigned from scratch to work with MathJax v4

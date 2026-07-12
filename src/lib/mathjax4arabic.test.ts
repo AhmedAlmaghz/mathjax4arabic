@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import ArabicMathJax, { preprocess } from "./arabic-mathjax";
+import ArabicMathJax, { preprocess } from "./mathjax4arabic";
 
 const originalIsArabicPage = ArabicMathJax.config.isArabicPage;
 const originalAutoArabic = ArabicMathJax.config.autoArabic;

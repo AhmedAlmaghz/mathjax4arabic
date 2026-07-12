@@ -1,24 +1,24 @@
 {
   "name": "mathjax4arabic",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Ahmed Almaghz",
   "description": "Arabic preprocessing helpers and RTL rendering support for MathJax v4.",
   "type": "module",
   "license": "MIT",
-  "main": "./dist/arabic-mathjax.cjs",
-  "module": "./dist/arabic-mathjax.js",
-  "types": "./dist/arabic-mathjax.d.ts",
+  "main": "./dist/mathjax4arabic.cjs",
+  "module": "./dist/mathjax4arabic.js",
+  "types": "./dist/mathjax4arabic.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/arabic-mathjax.d.ts",
-      "import": "./dist/arabic-mathjax.js",
-      "require": "./dist/arabic-mathjax.cjs"
+      "types": "./dist/mathjax4arabic.d.ts",
+      "import": "./dist/mathjax4arabic.js",
+      "require": "./dist/mathjax4arabic.cjs"
     },
     "./browser": {
       "types": "./dist/browser.d.ts",
       "import": "./dist/browser.js"
     },
-    "./dist/arabic-mathjax.css": "./dist/arabic-mathjax.css",
+    "./dist/mathjax4arabic.css": "./dist/mathjax4arabic.css",
     "./package.json": "./package.json"
   },
   "files": [

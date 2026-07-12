@@ -2,7 +2,7 @@ import { copyFile, mkdir } from "node:fs/promises";
 import { dirname } from "node:path";
 
 const assets = [
-    ["public/arabic-mathjax.css", "dist/arabic-mathjax.css"],
+    ["public/mathjax4arabic.css", "dist/mathjax4arabic.css"],
 ];
 
 await Promise.all(

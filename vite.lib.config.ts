@@ -10,7 +10,7 @@ export default defineConfig({
         emptyOutDir: false,
         lib: {
             entry: {
-                "arabic-mathjax": path.resolve(__dirname, "src/lib/arabic-mathjax.ts"),
+                mathjax4arabic: path.resolve(__dirname, "src/lib/mathjax4arabic.ts"),
                 browser: path.resolve(__dirname, "src/lib/browser.ts"),
             },
             formats: ["es", "cjs"],

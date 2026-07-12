@@ -9,7 +9,7 @@
         "allowImportingTsExtensions": false
     },
     "include": [
-        "src/lib/arabic-mathjax.ts",
+        "src/lib/mathjax4arabic.ts",
         "src/lib/browser.ts"
     ]
 }

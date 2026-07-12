@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "../public/arabic-mathjax.css";
+@import "../public/mathjax4arabic.css";
 
 @theme {
   --font-sans: "Tajawal", ui-sans-serif, system-ui, sans-serif;
@@ -11,7 +11,7 @@ body {
 }
 
 mjx-mtext,
-mjx-mtext > mjx-utext,
+mjx-mtext>mjx-utext,
 mjx-container mjx-mtext,
 .MathJax mjx-mtext {
   font-family: "Aref Ruqaa", "Amiri", serif !important;

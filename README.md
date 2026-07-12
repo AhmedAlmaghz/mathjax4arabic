@@ -74,7 +74,7 @@ x^2 + y^2 = r^2
 ثم استخدم المكتبة في JavaScript/TypeScript:
 
 ```js
-import ArabicMathJax from "./arabic-mathjax.js";
+import ArabicMathJax from "./mathjax4arabic.js";
 
 // معالجة معادلة
 const processed = ArabicMathJax.preprocess("x^2 + 1 = 0");
@@ -119,7 +119,7 @@ x = 1
 ## ⚙️ الإعدادات
 
 ```js
-import ArabicMathJax from "./arabic-mathjax.js";
+import ArabicMathJax from "./mathjax4arabic.js";
 
 // إيقاف الكشف التلقائي
 ArabicMathJax.config.autoArabic = false;
