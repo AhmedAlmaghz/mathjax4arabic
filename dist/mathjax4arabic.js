@@ -65,7 +65,7 @@
 
     // Function names, e.g. `\sin` -> `جا`.
     functions: {
-      sin: "جا", cos: "تا", tan: "ظا", cot: "ظتا",
+      sin: "جا", cos: "جتا", tan: "ظا", cot: "ظتا",
       sec: "قا", csc: "قتا", log: "لو", ln: "لون",
       lim: "نها"
     },

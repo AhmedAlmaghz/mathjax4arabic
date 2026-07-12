@@ -11,32 +11,39 @@ export function useMathJaxReady() {
     let cancelled = false;
     let intervalId: ReturnType<typeof setInterval> | null = null;
 
+    const markReady = () => {
+      if (!cancelled) setReady(true);
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    };
+
     const checkReady = () => {
       const MJ = window.MathJax;
       if (MJ && typeof MJ.typesetPromise === "function") {
-        if (!cancelled) {
-          setReady(true);
-        }
-        if (intervalId) {
-          clearInterval(intervalId);
-          intervalId = null;
-        }
+        markReady();
         return true;
       }
       return false;
     };
 
-    // Check immediately
+    // Check immediately, then follow MathJax's startup promise if it is still loading.
     if (checkReady()) return;
+    const startupPromise = window.MathJax?.startup?.promise;
+    if (startupPromise && typeof startupPromise.then === "function") {
+      startupPromise.then(markReady).catch(() => {
+        if (!cancelled) console.warn("[useMathJaxReady] MathJax startup failed");
+      });
+    }
 
-    // Poll every 100ms
+    // Poll every 100ms as a fallback while the CDN script is loading.
     intervalId = setInterval(checkReady, 100);
 
-    // Timeout after 20 seconds to prevent infinite loading
+    // Timeout after 20 seconds to prevent infinite loading.
     const timeoutId = setTimeout(() => {
       if (!cancelled) {
         console.warn("[useMathJaxReady] Timed out waiting for MathJax");
-        setReady(true);
         if (intervalId) clearInterval(intervalId);
       }
     }, 20000);

@@ -6,6 +6,7 @@ import App from "./App";
 
 ArabicMathJax.configureMathJax();
 ArabicMathJax.injectStyles();
+ArabicMathJax.loadMathJax();
 window.ArabicMathJax = ArabicMathJax;
 
 createRoot(document.getElementById("root")!).render(
