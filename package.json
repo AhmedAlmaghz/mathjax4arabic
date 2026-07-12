@@ -1,6 +1,6 @@
 {
   "name": "mathjax4arabic",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "author": "Ahmed Almaghz",
   "description": "Arabic preprocessing helpers and RTL rendering support for MathJax v4.",
   "type": "module",
