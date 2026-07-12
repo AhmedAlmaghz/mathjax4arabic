@@ -107,6 +107,16 @@ describe("Arabic MathJax preprocessing", () => {
         expect(config).toMatchObject({
             loader: { load: ["[tex]/html", "[tex]/ams"] },
             tex: { packages: { "[+]": ["html", "ams"] } },
+            startup: { typeset: false },
         });
+        expect(typeof (config.startup as { ready?: unknown }).ready).toBe("function");
+    });
+
+    it("exposes zero-config browser helpers", () => {
+        expect(typeof ArabicMathJax.configureMathJax).toBe("function");
+        expect(typeof ArabicMathJax.loadMathJax).toBe("function");
+        expect(typeof ArabicMathJax.installAutoSetup).toBe("function");
+        expect(typeof ArabicMathJax.renderPage).toBe("function");
+        expect(typeof ArabicMathJax.typesetArabic).toBe("function");
     });
 });

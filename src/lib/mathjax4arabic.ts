@@ -136,6 +136,13 @@ function readArgs(s: string, p: number, n: number) {
 
 type PreprocessOptions = { forceArabic?: boolean };
 
+export interface AutoSetupOptions {
+  loadMathJax?: boolean;
+  autoRender?: boolean;
+  mathJaxUrl?: string;
+  target?: string | Element | Element[] | NodeListOf<Element>;
+}
+
 interface ProcessorContext {
   isArabicPage: () => boolean;
 }
@@ -476,6 +483,19 @@ export function preprocess(tex: string, opts?: PreprocessOptions): string {
   return process(input, false, ctx);
 }
 
+const MATH_DELIMITERS = [
+  { open: "$$", close: "$$", re: /\$\$([\s\S]+?)\$\$/g },
+  { open: "\\[", close: "\\]", re: /\\\[([\s\S]+?)\\\]/g },
+  { open: "$", close: "$", re: /\$([^$\n]+?)\$/g },
+  { open: "\\(", close: "\\)", re: /\\\(([\s\S]+?)\\\)/g },
+];
+
+function mergeStartupReady(baseReady: unknown, nextReady: unknown): (() => void) | undefined {
+  const callbacks = [baseReady, nextReady].filter((fn): fn is () => void => typeof fn === "function");
+  if (!callbacks.length) return undefined;
+  return () => callbacks.forEach(fn => fn());
+}
+
 export function getMathJaxConfig(overrides?: Record<string, unknown>): Record<string, unknown> {
   const base: Record<string, unknown> = {
     loader: { load: ["[tex]/html", "[tex]/ams"] },
@@ -489,9 +509,105 @@ export function getMathJaxConfig(overrides?: Record<string, unknown>): Record<st
       mtextInheritFont: true,
       scale: 1.1
     },
-    startup: { typeset: false }
+    startup: {
+      typeset: false,
+      ready: () => {
+        const mj = (globalThis as { MathJax?: { startup?: { defaultReady?: () => void } } }).MathJax;
+        mj?.startup?.defaultReady?.();
+      }
+    }
   };
-  return deepAssign(base, overrides || {});
+
+  const ready = mergeStartupReady(
+    (base.startup as Record<string, unknown>).ready,
+    (overrides?.startup as Record<string, unknown> | undefined)?.ready,
+  );
+  const merged = deepAssign(base, overrides || {});
+  if (ready) (merged.startup as Record<string, unknown>).ready = ready;
+  return merged;
+}
+
+function replaceDelimitedMath(html: string, opts?: PreprocessOptions): string {
+  return MATH_DELIMITERS.reduce((next, delimiter) => {
+    return next.replace(delimiter.re, (_whole, inner: string) => {
+      return `${delimiter.open}${preprocess(inner, opts)}${delimiter.close}`;
+    });
+  }, html);
+}
+
+function toElements(target?: string | Element | Element[] | NodeListOf<Element>): Element[] {
+  if (typeof document === "undefined") return [];
+  if (!target) return [document.body];
+  if (typeof target === "string") return Array.from(document.querySelectorAll(target));
+  if (target instanceof Element) return [target];
+  return Array.from(target).filter((el): el is Element => el instanceof Element);
+}
+
+export async function typesetArabic(
+  target?: string | Element | Element[] | NodeListOf<Element>,
+  opts?: PreprocessOptions & { force?: boolean },
+): Promise<Element[]> {
+  const elements = toElements(target);
+  for (const el of elements) {
+    if (el.getAttribute("data-mathjax4arabic-processed") === "true" && !opts?.force) continue;
+    el.innerHTML = replaceDelimitedMath(el.innerHTML, opts);
+    el.setAttribute("data-mathjax4arabic-processed", "true");
+  }
+
+  const mj = (globalThis as { MathJax?: { typesetPromise?: (elements: Element[]) => Promise<unknown> } }).MathJax;
+  await mj?.typesetPromise?.(elements);
+  return elements;
+}
+
+export function renderPage(opts?: PreprocessOptions & { force?: boolean }): Promise<Element[]> {
+  return typesetArabic(undefined, opts);
+}
+
+export function configureMathJax(overrides?: Record<string, unknown>): Record<string, unknown> {
+  const root = globalThis as { MathJax?: Record<string, unknown> };
+  root.MathJax = getMathJaxConfig(deepAssign(root.MathJax || {}, overrides || {}));
+  return root.MathJax;
+}
+
+export function loadMathJax(url = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"): Promise<void> {
+  if (typeof document === "undefined") return Promise.resolve();
+  const root = globalThis as { MathJax?: { startup?: { promise?: Promise<unknown> } } };
+  if (root.MathJax?.startup?.promise) return root.MathJax.startup.promise.then(() => undefined);
+  const existing = document.querySelector<HTMLScriptElement>('script[data-mathjax4arabic-loader], script[id="MathJax-script"]');
+  if (existing) {
+    return new Promise((resolve, reject) => {
+      existing.addEventListener("load", () => resolve(), { once: true });
+      existing.addEventListener("error", () => reject(new Error("Failed to load MathJax")), { once: true });
+    });
+  }
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.id = "MathJax-script";
+    script.src = url;
+    script.async = true;
+    script.dataset.mathjax4arabicLoader = "true";
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("Failed to load MathJax"));
+    document.head.appendChild(script);
+  });
+}
+
+export function installAutoSetup(options: AutoSetupOptions = {}): void {
+  if (typeof document === "undefined") return;
+  injectStyles();
+  configureMathJax();
+
+  const load = options.loadMathJax !== false;
+  const autoRender = options.autoRender !== false;
+  const ready = load ? loadMathJax(options.mathJaxUrl) : Promise.resolve();
+  if (!autoRender) return;
+  ready.then(() => {
+    const root = globalThis as { MathJax?: { startup?: { promise?: Promise<unknown> } } };
+    const startup = root.MathJax?.startup?.promise ?? Promise.resolve();
+    return startup.then(() => typesetArabic(options.target));
+  }).catch(err => {
+    console.error("[mathjax4arabic] automatic setup failed", err);
+  });
 }
 
 export function injectStyles(): void {
@@ -516,6 +632,11 @@ const ArabicMathJax = {
   config,
   preprocess,
   process: preprocess,
+  typesetArabic,
+  renderPage,
+  configureMathJax,
+  loadMathJax,
+  installAutoSetup,
   injectStyles,
   getMathJaxConfig,
   isArabicPage: () => config.isArabicPage(),

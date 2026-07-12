@@ -1,4 +1,4 @@
-import ArabicMathJax from "./mathjax4arabic";
+import ArabicMathJax, { installAutoSetup } from "./mathjax4arabic";
 
 declare global {
     interface Window {
@@ -8,6 +8,7 @@ declare global {
 
 if (typeof window !== "undefined") {
     window.ArabicMathJax = ArabicMathJax;
+    installAutoSetup();
 }
 
 export * from "./mathjax4arabic";

@@ -2,68 +2,25 @@ import { useState } from "react";
 import CodeBlock from "./CodeBlock";
 import { cn } from "../utils/cn";
 
-const CDN_SNIPPET = `<!-- 1) خط Amiri اختياري لعرض عربي أجمل -->
-<link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
-
-<!-- 2) ورقة أنماط Arabic MathJax -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/arabic-mathjax@4/dist/arabic-mathjax.css">
-
-<!-- 3) مكتبة Arabic MathJax (يجب تحميلها قبل إعداد MathJax) -->
-<script src="https://cdn.jsdelivr.net/npm/arabic-mathjax@4/dist/arabic-mathjax.js"></script>
-
-<!-- 4) إعداد MathJax عبر الدالة المساعدة، ثم تحميل MathJax v4.1.3 -->
-<script>
-  window.MathJax = window.ArabicMathJax.getMathJaxConfig();
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-chtml.js" id="MathJax-script" async></script>`;
+const CDN_SNIPPET = `<!-- رابط واحد فقط: يضبط MathJax، يحقن الأنماط، يحمّل MathJax، ثم يعرض الصفحة تلقائياً -->
+<script type="module" src="https://cdn.jsdelivr.net/npm/mathjax4arabic@1/dist/browser.js"></script>`;
 
 const HTML_USAGE_SNIPPET = `<p lang="ar" dir="rtl">
-  حلّ المعادلة: \\( \\ar{a x^2 + b x + c = 0} \\)
-</p>
+  حلّ المعادلة: \\( a x^2 + b x + c = 0 \\)
+</p>`;
 
-<script>
-  // بعد جاهزية MathJax، امسح الصفحة بالكامل وترجم كل الصيغ الرياضية دفعة واحدة:
-  window.MathJax.startup.promise.then(() => {
-    window.ArabicMathJax.renderPage();
-  });
-</script>`;
+const NPM_INSTALL = `npm install mathjax4arabic`;
 
-const NPM_INSTALL = `npm install arabic-mathjax mathjax@4`;
+const NPM_USAGE = `import ArabicMathJax from "mathjax4arabic/browser";
 
-const NPM_USAGE = `import ArabicMathJax from "arabic-mathjax";
-import "arabic-mathjax/dist/arabic-mathjax.css";
-import { mathjax } from "mathjax-full/js/mathjax.js";
-import { TeX } from "mathjax-full/js/input/tex.js";
-import { CHTML } from "mathjax-full/js/output/chtml.js";
-import { liteAdaptor } from "mathjax-full/js/adaptors/liteAdaptor.js";
-import { RegisterHTMLHandler } from "mathjax-full/js/handlers/html.js";
+// لا تحتاج لضبط MathJax أو استيراد CSS.
+// المدخل browser يضبط كل شيء تلقائياً ويعرض الصفحة.
+console.log(ArabicMathJax.version);`;
 
-const adaptor = liteAdaptor();
-RegisterHTMLHandler(adaptor);
+const REACT_USAGE = `import "mathjax4arabic/browser";
 
-const html = mathjax.document("", {
-  InputJax: new TeX({ packages: ["base", "html"] }),
-  OutputJax: new CHTML(),
-});
-
-// حوّل صياغتك أولًا عبر Arabic MathJax، ثم مرّرها إلى MathJax كالمعتاد:
-const tex = ArabicMathJax.preprocess("\\\\ar{x = 1}", { forceArabic: true });
-const node = html.convert(tex, { display: true });
-console.log(adaptor.outerHTML(node));`;
-
-const REACT_USAGE = `import { useEffect, useRef } from "react";
-
-function ArabicFormula({ tex, forceArabic = true }) {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    if (!window.MathJax || !window.ArabicMathJax) return;
-    const processed = window.ArabicMathJax.preprocess(tex, { forceArabic });
-    ref.current.textContent = \`\\\\[\${processed}\\\\]\`;
-    window.MathJax.typesetPromise([ref.current]);
-  }, [tex, forceArabic]);
-
-  return <div ref={ref} />;
+export default function ArabicFormula() {
+  return <div lang="ar" dir="rtl">\\( x^2 + y^2 = r^2 \\)</div>;
 }`;
 
 const TABS = [
@@ -114,10 +71,9 @@ export default function Installation() {
         )}
         {tab === "react" && <CodeBlock lang="jsx" code={REACT_USAGE} />}
 
-        <div className="mt-8 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm leading-relaxed text-amber-200">
-          💡 هذا المستودع التجريبي (الموقع الذي تتصفّحه الآن) يحمّل المكتبة محليًا من{" "}
-          <code dir="ltr">/arabic-mathjax.js</code> و <code dir="ltr">/arabic-mathjax.css</code> — راجع ملف
-          <code dir="ltr" className="mx-1">README.md</code> في جذر المشروع للحصول على الشرح الكامل بالعربية.
+        <div className="mt-8 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm leading-relaxed text-emerald-100">
+          💡 الاستخدام الافتراضي أصبح بدون إعدادات: انسخ رابط CDN أو استورد مدخل المتصفح من npm، وستتولى الحزمة
+          ضبط MathJax وحقن الأنماط وتحويل المعادلات تلقائياً.
         </div>
       </div>
     </section>
