@@ -1,5 +1,5 @@
-const z = "4.1.0", x = "mjx-ar-flip";
-function I() {
+const I = "4.1.0", x = "mjx-ar-flip";
+function Z() {
   try {
     return (document.documentElement.getAttribute("lang") || "").toLowerCase().startsWith("ar");
   } catch {
@@ -8,7 +8,7 @@ function I() {
 }
 const o = {
   flipClass: x,
-  isArabicPage: I,
+  isArabicPage: Z,
   autoArabic: !0,
   digits: {
     0: "٠",
@@ -111,7 +111,7 @@ const o = {
     probability: { en: "P", ar: "حا" }
   }
 };
-function Z(e) {
+function D(e) {
   return e.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 function $(e, r) {
@@ -147,10 +147,10 @@ function p(e, r, a) {
   }
   return { args: t, end: r };
 }
-function D(e) {
+function B(e) {
   return typeof e?.forceArabic == "boolean" ? { isArabicPage: () => e.forceArabic } : { isArabicPage: () => o.isArabicPage() };
 }
-function w(e) {
+function E(e) {
   return `\\class{${o.flipClass}}{${e}}`;
 }
 function l(e) {
@@ -167,14 +167,14 @@ function d(e, r, a) {
       const i = /^\\([a-zA-Z]+)/.exec(e.slice(n));
       if (i) {
         const m = i[1], u = n + i[0].length;
-        let j = !0;
+        let w = !0;
         switch (m) {
           case "ar":
           case "alwaysar": {
             const c = h(e, u);
             if (m === "alwaysar" || a.isArabicPage()) {
               let g = d(c.value, !0, a);
-              g = B(g), t += w(g);
+              g = _(g), t += E(g);
             } else
               t += d(c.value, r, a);
             n = c.end;
@@ -183,7 +183,7 @@ function d(e, r, a) {
           case "fliph":
           case "mirror": {
             const c = h(e, u);
-            t += w(d(c.value, !r, a)), n = c.end;
+            t += E(d(c.value, !r, a)), n = c.end;
             break;
           }
           case "transx": {
@@ -193,7 +193,7 @@ function d(e, r, a) {
           }
           case "transt": {
             const c = p(e, u, 2);
-            a.isArabicPage() ? t += _(c.args[1], r) : t += d(c.args[0], r, a), n = c.end;
+            a.isArabicPage() ? t += H(c.args[1], r) : t += d(c.args[0], r, a), n = c.end;
             break;
           }
           case "transs": {
@@ -217,8 +217,8 @@ function d(e, r, a) {
           case "tmfrac": {
             const c = p(e, u, 3);
             if (a.isArabicPage()) {
-              const [f, g, E] = c.args.map(y), T = r ? l(f) : f, L = r ? l(g) : g, R = r ? l(E) : E;
-              t += `${T}\\tfrac{${L}}{${R}}`;
+              const [f, g, j] = c.args.map(y), L = r ? l(f) : f, R = r ? l(g) : g, z = r ? l(j) : j;
+              t += `${L}\\tfrac{${R}}{${z}}`;
             } else
               t += `${c.args[0]}\\tfrac{${c.args[1]}}{${c.args[2]}}`;
             n = c.end;
@@ -235,9 +235,9 @@ function d(e, r, a) {
             break;
           }
           default:
-            j = !1;
+            w = !1;
         }
-        if (j) continue;
+        if (w) continue;
         t += i[0], n = u;
         continue;
       }
@@ -255,19 +255,19 @@ function d(e, r, a) {
   }
   return t;
 }
-function B(e) {
+function _(e) {
   const r = Object.keys(o.functions).sort((a, t) => t.length - a.length);
   if (r.length) {
-    const a = new RegExp(`\\\\(${r.map(Z).join("|")})(?![a-zA-Z])`, "g");
+    const a = new RegExp(`\\\\(${r.map(D).join("|")})(?![a-zA-Z])`, "g");
     e = e.replace(a, (t, n) => `\\, ${l(o.functions[n])} \\,`);
   }
-  return e = e.replace(/\d+(?:\.\d+)?/g, (a) => l(y(a))), e = H(e), e = J(e), e;
+  return e = e.replace(/\d+(?:\.\d+)?/g, (a) => l(y(a))), e = O(e), e = J(e), e;
 }
 const v = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
 function b(e, r) {
   return r ? l(e) : `\\text{${e}}`;
 }
-function _(e, r) {
+function H(e, r) {
   let a = "", t = 0;
   for (; t < e.length; ) {
     const n = e[t];
@@ -305,7 +305,7 @@ function _(e, r) {
   }
   return a;
 }
-function H(e) {
+function O(e) {
   let r = "";
   for (let a = 0; a < e.length; a++) {
     const t = e[a];
@@ -358,17 +358,17 @@ function J(e) {
   return r;
 }
 function A(e, r) {
-  const a = D(r);
+  const a = B(r);
   let t = String(e ?? "");
   return o.autoArabic && a.isArabicPage() && !t.includes("\\ar{") && !t.includes("\\alwaysar{") && (t = `\\ar{${t}}`), d(t, !1, a);
 }
-const O = [
+const q = [
   { open: "$$", close: "$$", re: /\$\$([\s\S]+?)\$\$/g },
   { open: "\\[", close: "\\]", re: /\\\[([\s\S]+?)\\\]/g },
   { open: "$", close: "$", re: /\$([^$\n]+?)\$/g },
   { open: "\\(", close: "\\)", re: /\\\(([\s\S]+?)\\\)/g }
 ];
-function q(e, r) {
+function X(e, r) {
   const a = [e, r].filter((t) => typeof t == "function");
   if (a.length)
     return () => a.forEach((t) => t());
@@ -392,25 +392,25 @@ function k(e) {
         globalThis.MathJax?.startup?.defaultReady?.();
       }
     }
-  }, a = q(
+  }, a = X(
     r.startup.ready,
     e?.startup?.ready
   ), t = $(r, e || {});
   return a && (t.startup.ready = a), t;
 }
-function X(e, r) {
-  return O.reduce((a, t) => a.replace(t.re, (n, s) => `${t.open}${A(s, r)}${t.close}`), e);
+function N(e, r) {
+  return q.reduce((a, t) => a.replace(t.re, (n, s) => `${t.open}${A(s, r)}${t.close}`), e);
 }
-function N(e) {
+function W(e) {
   return typeof document > "u" ? [] : e ? typeof e == "string" ? Array.from(document.querySelectorAll(e)) : e instanceof Element ? [e] : Array.from(e).filter((r) => r instanceof Element) : [document.body];
 }
 async function P(e, r) {
-  const a = N(e);
+  const a = W(e);
   for (const n of a)
-    n.getAttribute("data-mathjax4arabic-processed") === "true" && !r?.force || (n.innerHTML = X(n.innerHTML, r), n.setAttribute("data-mathjax4arabic-processed", "true"));
+    n.getAttribute("data-mathjax4arabic-processed") === "true" && !r?.force || (n.innerHTML = N(n.innerHTML, r), n.setAttribute("data-mathjax4arabic-processed", "true"));
   return await globalThis.MathJax?.typesetPromise?.(a), a;
 }
-function W(e) {
+function K(e) {
   return P(void 0, e);
 }
 function S(e) {
@@ -430,15 +430,15 @@ function C(e = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js") {
     s.id = "MathJax-script", s.src = e, s.async = !0, s.dataset.mathjax4arabicLoader = "true", s.onload = () => t(), s.onerror = () => n(new Error("Failed to load MathJax")), document.head.appendChild(s);
   });
 }
-function K(e = {}) {
+function F(e = {}) {
   if (typeof document > "u") return;
-  F(), S();
+  T(), S();
   const r = e.loadMathJax !== !1, a = e.autoRender !== !1, t = r ? C(e.mathJaxUrl) : Promise.resolve();
   a && t.then(() => (globalThis.MathJax?.startup?.promise ?? Promise.resolve()).then(() => P(e.target))).catch((n) => {
     console.error("[mathjax4arabic] automatic setup failed", n);
   });
 }
-function F() {
+function T() {
   if (typeof document > "u" || document.querySelector("style[data-arabic-mathjax]")) return;
   const e = document.createElement("style");
   e.setAttribute("data-arabic-mathjax", "true"), e.textContent = `
@@ -452,28 +452,29 @@ html[lang^="ar"] mjx-container[display="true"] {
 }`, document.head.appendChild(e);
 }
 const U = {
-  version: z,
+  version: I,
   config: o,
   preprocess: A,
   process: A,
   typesetArabic: P,
-  renderPage: W,
+  renderPage: K,
   configureMathJax: S,
   loadMathJax: C,
-  installAutoSetup: K,
-  injectStyles: F,
+  installAutoSetup: F,
+  injectStyles: T,
   getMathJaxConfig: k,
   isArabicPage: () => o.isArabicPage(),
   flipClass: x
 };
+typeof window < "u" && (window.ArabicMathJax = U, F());
 export {
   S as configureMathJax,
   U as default,
   k as getMathJaxConfig,
-  F as injectStyles,
-  K as installAutoSetup,
+  T as injectStyles,
+  F as installAutoSetup,
   C as loadMathJax,
   A as preprocess,
-  W as renderPage,
+  K as renderPage,
   P as typesetArabic
 };

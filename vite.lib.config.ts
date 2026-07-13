@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 export default defineConfig({
     build: {
-        emptyOutDir: false,
+        emptyOutDir: true,
         lib: {
             entry: {
                 mathjax4arabic: path.resolve(__dirname, "src/lib/mathjax4arabic.ts"),

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>اختبار MathJax4Arabic من CDN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Tajawal", system-ui, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ecfdf5, #f8fafc 42%, #eef2ff);
+    }
+
+    main {
+      width: min(980px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0;
+    }
+
+    .hero,
+    .card {
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: 0 24px 80px rgba(15, 23, 42, 0.10);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero {
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.15;
+      font-weight: 900;
+    }
+
+    p {
+      margin: 0;
+      color: #475569;
+      line-height: 1.9;
+      font-size: 18px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+      border-radius: 999px;
+      padding: 10px 16px;
+      background: #ecfdf5;
+      color: #047857;
+      font-weight: 700;
+    }
+
+    .status::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: currentColor;
+      box-shadow: 0 0 0 6px rgba(5, 150, 105, 0.12);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      padding: 24px;
+    }
+
+    .card h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+    }
+
+    .formula {
+      min-height: 90px;
+      display: grid;
+      place-items: center;
+      margin-top: 18px;
+      border-radius: 18px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 18px;
+      overflow-x: auto;
+      font-size: 22px;
+    }
+
+    code {
+      direction: ltr;
+      unicode-bidi: plaintext;
+      border-radius: 8px;
+      background: #f1f5f9;
+      padding: 2px 7px;
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      color: #0f766e;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <h1>اختبار إنتاجي مستقل لـ MathJax4Arabic</h1>
+      <p>
+        هذه الصفحة لا تستخدم أي ملف داخلي من المشروع. تعتمد فقط على رابط CDN:
+        <code>https://cdn.jsdelivr.net/npm/mathjax4arabic@1/dist/browser.js</code>
+      </p>
+      <div id="status" class="status">جارٍ تحميل المكتبة و MathJax من CDN...</div>
+    </section>
+
+    <section class="grid" aria-label="أمثلة المعادلات">
+      <article class="card">
+        <h2>ترجمة تلقائية للمتغيرات والأرقام</h2>
+        <p>المعادلة مكتوبة بصيغة TeX عادية داخل صفحة عربية.</p>
+        <div class="formula">\( x^2 + y^2 = r^2 \)</div>
+      </article>
+
+      <article class="card">
+        <h2>دوال وتكامل</h2>
+        <p>اختبار الدوال، الأرقام، وأمر المسافة في TeX.</p>
+        <div class="formula">\[ \int_{0}^{\pi} \sin(x) \, dx = 2 \]</div>
+      </article>
+
+      <article class="card">
+        <h2>جذور وكسور</h2>
+        <p>اختبار ترجمة المتغيرات داخل المجموعات الرياضية.</p>
+        <div class="formula">\[ |z| = \sqrt{a^2 + b^2} \]</div>
+      </article>
+
+      <article class="card">
+        <h2>نص عربي مختلط برمز رياضي</h2>
+        <p>اختبار أمر الترجمة النصية مع شرط رياضي.</p>
+        <div class="formula">\[ f(x) = \ln(x) \transt{where x > 0}{حيث س > ٠} \]</div>
+      </article>
+    </section>
+  </main>
+
+  <script type="module" src="https://cdn.jsdelivr.net/npm/mathjax4arabic@1/dist/browser.js"></script>
+  <script>
+    const statusEl = document.getElementById("status");
+    const startedAt = Date.now();
+
+    const timer = setInterval(() => {
+      if (window.ArabicMathJax && window.MathJax && typeof window.MathJax.typesetPromise === "function") {
+        clearInterval(timer);
+        statusEl.textContent = `تم التحميل والعرض من CDN بنجاح خلال ${Date.now() - startedAt}ms`;
+        return;
+      }
+
+      if (Date.now() - startedAt > 20000) {
+        clearInterval(timer);
+        statusEl.textContent = "تعذر التحقق من التحميل. افتح أدوات المطور لمعرفة خطأ الشبكة أو CDN.";
+        statusEl.style.background = "#fff1f2";
+        statusEl.style.color = "#be123c";
+      }
+    }, 200);
+  </script>
+</body>
+</html>
