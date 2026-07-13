@@ -1,15 +1,16 @@
-const z = "4.1.0", x = "mjx-ar-flip";
-function I() {
+const Z = "4.1.0", w = "mjx-ar-flip";
+function D() {
   try {
     return (document.documentElement.getAttribute("lang") || "").toLowerCase().startsWith("ar");
   } catch {
     return !1;
   }
 }
-const o = {
-  flipClass: x,
-  isArabicPage: I,
+const s = {
+  flipClass: w,
+  isArabicPage: D,
   autoArabic: !0,
+  mathFont: '"Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif',
   digits: {
     0: "٠",
     1: "١",
@@ -25,7 +26,7 @@ const o = {
   decimalMark: "٫",
   thousandsMark: "٬",
   identifiers: {
-    a: "أ",
+    a: "ا",
     b: "ب",
     c: "جـ",
     d: "د",
@@ -78,17 +79,17 @@ const o = {
     coth: "ظتاز",
     sech: "قاز",
     csch: "قتاز",
-    log: "لغ",
-    ln: "لو",
+    log: "لـغ",
+    ln: "لـو",
     lg: "لغ",
-    lim: "نهــا",
+    lim: "نهـــا",
     limsup: "حد أعلى",
     liminf: "حد أدنى",
     max: "أقصى",
     min: "أدنى",
     sup: "حد أعلى",
     inf: "حد أدنى",
-    sum: "مجــ",
+    sum: "مجـــــ",
     prod: "جداء",
     exp: "أس",
     det: "محدد",
@@ -111,18 +112,18 @@ const o = {
     probability: { en: "P", ar: "حا" }
   }
 };
-function Z(e) {
+function B(e) {
   return e.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
-function $(e, r) {
-  return Object.keys(r || {}).forEach((a) => {
-    const t = r[a];
-    t && typeof t == "object" && !Array.isArray(t) && typeof e[a] == "object" ? $(e[a], t) : e[a] = t;
+function x(e, n) {
+  return Object.keys(n || {}).forEach((a) => {
+    const t = n[a];
+    t && typeof t == "object" && !Array.isArray(t) && typeof e[a] == "object" ? x(e[a], t) : e[a] = t;
   }), e;
 }
-function M(e, r) {
+function A(e, n) {
   let a = 0;
-  for (let t = r; t < e.length; t++) {
+  for (let t = n; t < e.length; t++) {
     if (e[t] === "\\") {
       t++;
       continue;
@@ -133,95 +134,95 @@ function M(e, r) {
   }
   return -1;
 }
-function h(e, r) {
-  for (; r < e.length && /\s/.test(e[r]); ) r++;
-  if (e[r] !== "{") return { value: e[r] || "", end: r + 1 };
-  const a = M(e, r);
-  return a === -1 ? { value: e.slice(r + 1), end: e.length } : { value: e.slice(r + 1, a), end: a + 1 };
+function m(e, n) {
+  for (; n < e.length && /\s/.test(e[n]); ) n++;
+  if (e[n] !== "{") return { value: e[n] || "", end: n + 1 };
+  const a = A(e, n);
+  return a === -1 ? { value: e.slice(n + 1), end: e.length } : { value: e.slice(n + 1, a), end: a + 1 };
 }
-function p(e, r, a) {
+function b(e, n, a) {
   const t = [];
-  for (let n = 0; n < a; n++) {
-    const s = h(e, r);
-    t.push(s.value), r = s.end;
+  for (let r = 0; r < a; r++) {
+    const c = m(e, n);
+    t.push(c.value), n = c.end;
   }
-  return { args: t, end: r };
+  return { args: t, end: n };
 }
-function D(e) {
-  return typeof e?.forceArabic == "boolean" ? { isArabicPage: () => e.forceArabic } : { isArabicPage: () => o.isArabicPage() };
+function _(e) {
+  return typeof e?.forceArabic == "boolean" ? { isArabicPage: () => e.forceArabic } : { isArabicPage: () => s.isArabicPage() };
 }
-function w(e) {
-  return `\\class{${o.flipClass}}{${e}}`;
+function F(e) {
+  return `\\class{${s.flipClass}}{${e}}`;
 }
 function l(e) {
-  return `\\class{${o.flipClass}}{\\text{${e}}}`;
+  return `\\class{${s.flipClass}}{\\text{${e}}}`;
 }
-function y(e) {
-  return String(e).replace(/[0-9]/g, (r) => o.digits[r]).replace(/\./g, o.decimalMark).replace(/,/g, o.thousandsMark);
+function j(e) {
+  return String(e).replace(/[0-9]/g, (n) => s.digits[n]).replace(/\./g, s.decimalMark).replace(/,/g, s.thousandsMark);
 }
-function d(e, r, a) {
-  let t = "", n = 0;
-  for (; n < e.length; ) {
-    const s = e[n];
-    if (s === "\\") {
-      const i = /^\\([a-zA-Z]+)/.exec(e.slice(n));
+function d(e, n, a) {
+  let t = "", r = 0;
+  for (; r < e.length; ) {
+    const c = e[r];
+    if (c === "\\") {
+      const i = /^\\([a-zA-Z]+)/.exec(e.slice(r));
       if (i) {
-        const m = i[1], u = n + i[0].length;
-        let j = !0;
-        switch (m) {
+        const h = i[1], u = r + i[0].length;
+        let P = !0;
+        switch (h) {
           case "ar":
           case "alwaysar": {
-            const c = h(e, u);
-            if (m === "alwaysar" || a.isArabicPage()) {
-              let g = d(c.value, !0, a);
-              g = B(g), t += w(g);
+            const o = m(e, u);
+            if (h === "alwaysar" || a.isArabicPage()) {
+              let g = d(o.value, !0, a);
+              g = q(g), t += F(g);
             } else
-              t += d(c.value, r, a);
-            n = c.end;
+              t += d(o.value, n, a);
+            r = o.end;
             break;
           }
           case "fliph":
           case "mirror": {
-            const c = h(e, u);
-            t += w(d(c.value, !r, a)), n = c.end;
+            const o = m(e, u);
+            t += F(d(o.value, !n, a)), r = o.end;
             break;
           }
           case "transx": {
-            const c = p(e, u, 2);
-            t += d(a.isArabicPage() ? c.args[1] : c.args[0], r, a), n = c.end;
+            const o = b(e, u, 2);
+            t += d(a.isArabicPage() ? o.args[1] : o.args[0], n, a), r = o.end;
             break;
           }
           case "transt": {
-            const c = p(e, u, 2);
-            a.isArabicPage() ? t += _(c.args[1], r) : t += d(c.args[0], r, a), n = c.end;
+            const o = b(e, u, 2);
+            a.isArabicPage() ? t += H(o.args[1], n) : t += d(o.args[0], n, a), r = o.end;
             break;
           }
           case "transs": {
-            const c = p(e, u, 2);
-            a.isArabicPage() ? t += c.args[1].replace(
+            const o = b(e, u, 2);
+            a.isArabicPage() ? t += o.args[1].replace(
               /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]+/g,
-              (f) => r ? l(f) : `\\text{${f}}`
-            ) : t += d(c.args[0], r, a), n = c.end;
+              (f) => n ? l(f) : `\\text{${f}}`
+            ) : t += d(o.args[0], n, a), r = o.end;
             break;
           }
           case "transn": {
-            const c = h(e, u);
+            const o = m(e, u);
             if (a.isArabicPage()) {
-              const f = y(c.value);
-              t += r ? l(f) : `\\text{${f}}`;
+              const f = j(o.value);
+              t += n ? l(f) : `\\text{${f}}`;
             } else
-              t += c.value;
-            n = c.end;
+              t += o.value;
+            r = o.end;
             break;
           }
           case "tmfrac": {
-            const c = p(e, u, 3);
+            const o = b(e, u, 3);
             if (a.isArabicPage()) {
-              const [f, g, E] = c.args.map(y), T = r ? l(f) : f, L = r ? l(g) : g, R = r ? l(E) : E;
-              t += `${T}\\tfrac{${L}}{${R}}`;
+              const [f, g, E] = o.args.map(j), R = n ? l(f) : f, z = n ? l(g) : g, I = n ? l(E) : E;
+              t += `${R}\\tfrac{${z}}{${I}}`;
             } else
-              t += `${c.args[0]}\\tfrac{${c.args[1]}}{${c.args[2]}}`;
-            n = c.end;
+              t += `${o.args[0]}\\tfrac{${o.args[1]}}{${o.args[2]}}`;
+            r = o.end;
             break;
           }
           case "zero":
@@ -230,137 +231,137 @@ function d(e, r, a) {
           case "charge":
           case "imaginary":
           case "probability": {
-            const c = o.dictionary[m];
-            c ? a.isArabicPage() ? t += r ? l(c.ar) : `\\text{${c.ar}}` : t += c.en : t += i[0], n = u;
+            const o = s.dictionary[h];
+            o ? a.isArabicPage() ? t += n ? l(o.ar) : `\\text{${o.ar}}` : t += o.en : t += i[0], r = u;
             break;
           }
           default:
-            j = !1;
+            P = !1;
         }
-        if (j) continue;
-        t += i[0], n = u;
+        if (P) continue;
+        t += i[0], r = u;
         continue;
       }
     }
-    if (s === "{") {
-      const i = M(e, n);
+    if (c === "{") {
+      const i = A(e, r);
       if (i === -1) {
-        t += s, n++;
+        t += c, r++;
         continue;
       }
-      t += "{" + d(e.slice(n + 1, i), r, a) + "}", n = i + 1;
+      t += "{" + d(e.slice(r + 1, i), n, a) + "}", r = i + 1;
       continue;
     }
-    t += s, n++;
+    t += c, r++;
   }
   return t;
 }
-function B(e) {
-  const r = Object.keys(o.functions).sort((a, t) => t.length - a.length);
-  if (r.length) {
-    const a = new RegExp(`\\\\(${r.map(Z).join("|")})(?![a-zA-Z])`, "g");
-    e = e.replace(a, (t, n) => `\\, ${l(o.functions[n])} \\,`);
+function q(e) {
+  const n = Object.keys(s.functions).sort((a, t) => t.length - a.length);
+  if (n.length) {
+    const a = new RegExp(`\\\\(${n.map(B).join("|")})(?![a-zA-Z])`, "g");
+    e = e.replace(a, (t, r) => `\\, ${l(s.functions[r])} \\,`);
   }
-  return e = e.replace(/\d+(?:\.\d+)?/g, (a) => l(y(a))), e = H(e), e = J(e), e;
+  return e = e.replace(/\d+(?:\.\d+)?/g, (a) => l(j(a))), e = N(e), e = k(e), e;
 }
 const v = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
-function b(e, r) {
-  return r ? l(e) : `\\text{${e}}`;
+function p(e, n) {
+  return n ? l(e) : `\\text{${e}}`;
 }
-function _(e, r) {
+function H(e, n) {
   let a = "", t = 0;
   for (; t < e.length; ) {
-    const n = e[t];
-    if (/\s/.test(n)) {
+    const r = e[t];
+    if (/\s/.test(r)) {
       for (; t < e.length && /\s/.test(e[t]); ) t++;
       a && !a.endsWith("\\,") && (a += "\\,");
       continue;
     }
-    if (n === "\\") {
-      const s = /^\\([a-zA-Z]+|.)/.exec(e.slice(t));
-      if (s) {
-        a += s[0], t += s[0].length;
+    if (r === "\\") {
+      const c = /^\\([a-zA-Z]+|.)/.exec(e.slice(t));
+      if (c) {
+        a += c[0], t += c[0].length;
         continue;
       }
     }
-    if (v.test(n)) {
-      let s = t + 1;
-      for (; s < e.length && v.test(e[s]); ) s++;
-      a += b(e.slice(t, s), r), t = s;
+    if (v.test(r)) {
+      let c = t + 1;
+      for (; c < e.length && v.test(e[c]); ) c++;
+      a += p(e.slice(t, c), n), t = c;
       continue;
     }
-    if (/\d/.test(n)) {
-      const s = /^\d+(?:\.\d+)?/.exec(e.slice(t));
-      if (s) {
-        a += b(y(s[0]), r), t += s[0].length;
+    if (/\d/.test(r)) {
+      const c = /^\d+(?:\.\d+)?/.exec(e.slice(t));
+      if (c) {
+        a += p(j(c[0]), n), t += c[0].length;
         continue;
       }
     }
-    if (/[a-zA-Z]/.test(n)) {
-      const s = o.identifiers[n];
-      a += b(s || n, r), t++;
+    if (/[a-zA-Z]/.test(r)) {
+      const c = s.identifiers[r];
+      a += p(c || r, n), t++;
       continue;
     }
-    a += o.operators[n] ? b(o.operators[n], r) : n, t++;
+    a += s.operators[r] ? p(s.operators[r], n) : r, t++;
   }
   return a;
 }
-function H(e) {
-  let r = "";
+function N(e) {
+  let n = "";
   for (let a = 0; a < e.length; a++) {
     const t = e[a];
     if (t === "\\") {
-      const n = /^\\([a-zA-Z]+|.)/.exec(e.slice(a));
-      if (n) {
-        r += n[0], a += n[0].length - 1;
+      const r = /^\\([a-zA-Z]+|.)/.exec(e.slice(a));
+      if (r) {
+        n += r[0], a += r[0].length - 1;
         continue;
       }
     }
-    r += o.operators[t] ? l(o.operators[t]) : t;
+    n += s.operators[t] ? l(s.operators[t]) : t;
   }
-  return r;
+  return n;
 }
-function J(e) {
-  let r = "", a = 0, t = !1;
+function k(e) {
+  let n = "", a = 0, t = !1;
   for (; a < e.length; ) {
-    const n = e[a];
-    if (n === "\\") {
-      const s = /^\\([a-zA-Z]+|.)/.exec(e.slice(a));
-      if (s) {
-        if (t && (r += "\\,", t = !1), r += s[0], a += s[0].length, s[1] === "class") {
-          const i = h(e, a), m = h(e, i.end);
-          r += e.slice(a, m.end), a = m.end;
-        } else if (s[1] === "text") {
-          const i = h(e, a);
-          r += e.slice(a, i.end), a = i.end;
+    const r = e[a];
+    if (r === "\\") {
+      const c = /^\\([a-zA-Z]+|.)/.exec(e.slice(a));
+      if (c) {
+        if (t && (n += "\\,", t = !1), n += c[0], a += c[0].length, c[1] === "class") {
+          const i = m(e, a), h = m(e, i.end);
+          n += e.slice(a, h.end), a = h.end;
+        } else if (c[1] === "text") {
+          const i = m(e, a);
+          n += e.slice(a, i.end), a = i.end;
         }
         continue;
       }
     }
-    if (n === "{") {
-      const s = M(e, a);
-      if (s !== -1) {
-        r += "{" + J(e.slice(a + 1, s)) + "}", a = s + 1, t = !1;
+    if (r === "{") {
+      const c = A(e, a);
+      if (c !== -1) {
+        n += "{" + k(e.slice(a + 1, c)) + "}", a = c + 1, t = !1;
         continue;
       }
     }
-    if (/[a-zA-Z]/.test(n)) {
-      const s = o.identifiers[n];
-      s ? (t && (r += "\\,"), r += l(s), t = !0) : (t && (r += "\\,", t = !1), r += n), a++;
+    if (/[a-zA-Z]/.test(r)) {
+      const c = s.identifiers[r];
+      c ? (t && (n += "\\,"), n += l(c), t = !0) : (t && (n += "\\,", t = !1), n += r), a++;
       continue;
     }
-    if (/[+\-=<>]/.test(n)) {
-      t && (r += "\\,"), r += n, t = !1, a++;
+    if (/[+\-=<>]/.test(r)) {
+      t && (n += "\\,"), n += r, t = !1, a++;
       continue;
     }
-    r += n, t = !1, a++;
+    n += r, t = !1, a++;
   }
-  return r;
+  return n;
 }
-function A(e, r) {
-  const a = D(r);
+function y(e, n) {
+  const a = _(n);
   let t = String(e ?? "");
-  return o.autoArabic && a.isArabicPage() && !t.includes("\\ar{") && !t.includes("\\alwaysar{") && (t = `\\ar{${t}}`), d(t, !1, a);
+  return s.autoArabic && a.isArabicPage() && !t.includes("\\ar{") && !t.includes("\\alwaysar{") && (t = `\\ar{${t}}`), d(t, !1, a);
 }
 const O = [
   { open: "$$", close: "$$", re: /\$\$([\s\S]+?)\$\$/g },
@@ -368,13 +369,13 @@ const O = [
   { open: "$", close: "$", re: /\$([^$\n]+?)\$/g },
   { open: "\\(", close: "\\)", re: /\\\(([\s\S]+?)\\\)/g }
 ];
-function q(e, r) {
-  const a = [e, r].filter((t) => typeof t == "function");
+function X(e, n) {
+  const a = [e, n].filter((t) => typeof t == "function");
   if (a.length)
     return () => a.forEach((t) => t());
 }
-function k(e) {
-  const r = {
+function J(e) {
+  const n = {
     loader: { load: ["[tex]/html", "[tex]/ams"] },
     tex: {
       packages: { "[+]": ["html", "ams"] },
@@ -392,56 +393,68 @@ function k(e) {
         globalThis.MathJax?.startup?.defaultReady?.();
       }
     }
-  }, a = q(
-    r.startup.ready,
+  }, a = X(
+    n.startup.ready,
     e?.startup?.ready
-  ), t = $(r, e || {});
+  ), t = x(n, e || {});
   return a && (t.startup.ready = a), t;
 }
-function X(e, r) {
-  return O.reduce((a, t) => a.replace(t.re, (n, s) => `${t.open}${A(s, r)}${t.close}`), e);
+function W(e, n) {
+  return O.reduce((a, t) => a.replace(t.re, (r, c) => `${t.open}${y(c, n)}${t.close}`), e);
 }
-function N(e) {
-  return typeof document > "u" ? [] : e ? typeof e == "string" ? Array.from(document.querySelectorAll(e)) : e instanceof Element ? [e] : Array.from(e).filter((r) => r instanceof Element) : [document.body];
+function K(e) {
+  return typeof document > "u" ? [] : e ? typeof e == "string" ? Array.from(document.querySelectorAll(e)) : e instanceof Element ? [e] : Array.from(e).filter((n) => n instanceof Element) : [document.body];
 }
-async function P(e, r) {
-  const a = N(e);
-  for (const n of a)
-    n.getAttribute("data-mathjax4arabic-processed") === "true" && !r?.force || (n.innerHTML = X(n.innerHTML, r), n.setAttribute("data-mathjax4arabic-processed", "true"));
+async function $(e, n) {
+  const a = K(e);
+  for (const r of a)
+    r.getAttribute("data-mathjax4arabic-processed") === "true" && !n?.force || (r.innerHTML = W(r.innerHTML, n), r.setAttribute("data-mathjax4arabic-processed", "true"));
   return await globalThis.MathJax?.typesetPromise?.(a), a;
 }
-function W(e) {
-  return P(void 0, e);
+function U(e) {
+  return $(void 0, e);
 }
 function S(e) {
-  const r = globalThis;
-  return r.MathJax = k($(r.MathJax || {}, e || {})), r.MathJax;
+  const n = globalThis;
+  return n.MathJax = J(x(n.MathJax || {}, e || {})), n.MathJax;
 }
 function C(e = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js") {
   if (typeof document > "u") return Promise.resolve();
-  const r = globalThis;
-  if (r.MathJax?.startup?.promise) return r.MathJax.startup.promise.then(() => {
+  const n = globalThis;
+  if (n.MathJax?.startup?.promise) return n.MathJax.startup.promise.then(() => {
   });
   const a = document.querySelector('script[data-mathjax4arabic-loader], script[id="MathJax-script"]');
-  return a ? new Promise((t, n) => {
-    a.addEventListener("load", () => t(), { once: !0 }), a.addEventListener("error", () => n(new Error("Failed to load MathJax")), { once: !0 });
-  }) : new Promise((t, n) => {
-    const s = document.createElement("script");
-    s.id = "MathJax-script", s.src = e, s.async = !0, s.dataset.mathjax4arabicLoader = "true", s.onload = () => t(), s.onerror = () => n(new Error("Failed to load MathJax")), document.head.appendChild(s);
+  return a ? new Promise((t, r) => {
+    a.addEventListener("load", () => t(), { once: !0 }), a.addEventListener("error", () => r(new Error("Failed to load MathJax")), { once: !0 });
+  }) : new Promise((t, r) => {
+    const c = document.createElement("script");
+    c.id = "MathJax-script", c.src = e, c.async = !0, c.dataset.mathjax4arabicLoader = "true", c.onload = () => t(), c.onerror = () => r(new Error("Failed to load MathJax")), document.head.appendChild(c);
   });
 }
-function K(e = {}) {
+function V(e = {}) {
   if (typeof document > "u") return;
-  F(), S();
-  const r = e.loadMathJax !== !1, a = e.autoRender !== !1, t = r ? C(e.mathJaxUrl) : Promise.resolve();
-  a && t.then(() => (globalThis.MathJax?.startup?.promise ?? Promise.resolve()).then(() => P(e.target))).catch((n) => {
-    console.error("[mathjax4arabic] automatic setup failed", n);
+  L(), e.mathFont ? T(e.mathFont) : M(), S();
+  const n = e.loadMathJax !== !1, a = e.autoRender !== !1, t = n ? C(e.mathJaxUrl) : Promise.resolve();
+  a && t.then(() => (globalThis.MathJax?.startup?.promise ?? Promise.resolve()).then(() => $(e.target))).catch((r) => {
+    console.error("[mathjax4arabic] automatic setup failed", r);
   });
 }
-function F() {
+function T(e) {
+  s.mathFont = e, M(e);
+}
+function M(e = s.mathFont, n) {
+  if (typeof document > "u") return;
+  const a = n ? typeof n == "string" ? Array.from(document.querySelectorAll(n)) : [n] : [document.documentElement];
+  for (const t of a)
+    t.style.setProperty("--mathjax4arabic-font", e), t.classList.add("mathjax4arabic-font");
+}
+function L() {
   if (typeof document > "u" || document.querySelector("style[data-arabic-mathjax]")) return;
   const e = document.createElement("style");
   e.setAttribute("data-arabic-mathjax", "true"), e.textContent = `
+:root {
+  --mathjax4arabic-font: ${s.mathFont};
+}
 .mjx-ar-flip {
   display: inline-block !important;
   transform: scaleX(-1);
@@ -449,31 +462,49 @@ function F() {
 }
 html[lang^="ar"] mjx-container[display="true"] {
   direction: rtl;
+}
+.mathjax4arabic-font mjx-container,
+.mathjax4arabic-font mjx-container mjx-math,
+.mathjax4arabic-font mjx-container mjx-mi,
+.mathjax4arabic-font mjx-container mjx-mn,
+.mathjax4arabic-font mjx-container mjx-mo,
+.mathjax4arabic-font mjx-container mjx-mtext,
+mjx-container.mathjax4arabic-font,
+mjx-container.mathjax4arabic-font mjx-math,
+mjx-container.mathjax4arabic-font mjx-mi,
+mjx-container.mathjax4arabic-font mjx-mn,
+mjx-container.mathjax4arabic-font mjx-mo,
+mjx-container.mathjax4arabic-font mjx-mtext {
+  font-family: var(--mathjax4arabic-font) !important;
 }`, document.head.appendChild(e);
 }
-const U = {
-  version: z,
-  config: o,
-  preprocess: A,
-  process: A,
-  typesetArabic: P,
-  renderPage: W,
+const Y = {
+  version: Z,
+  config: s,
+  preprocess: y,
+  process: y,
+  typesetArabic: $,
+  renderPage: U,
   configureMathJax: S,
   loadMathJax: C,
-  installAutoSetup: K,
-  injectStyles: F,
-  getMathJaxConfig: k,
-  isArabicPage: () => o.isArabicPage(),
-  flipClass: x
+  installAutoSetup: V,
+  setMathFont: T,
+  applyMathFont: M,
+  injectStyles: L,
+  getMathJaxConfig: J,
+  isArabicPage: () => s.isArabicPage(),
+  flipClass: w
 };
 export {
+  M as applyMathFont,
   S as configureMathJax,
-  U as default,
-  k as getMathJaxConfig,
-  F as injectStyles,
-  K as installAutoSetup,
+  Y as default,
+  J as getMathJaxConfig,
+  L as injectStyles,
+  V as installAutoSetup,
   C as loadMathJax,
-  A as preprocess,
-  W as renderPage,
-  P as typesetArabic
+  y as preprocess,
+  U as renderPage,
+  T as setMathFont,
+  $ as typesetArabic
 };

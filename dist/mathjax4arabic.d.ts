@@ -16,6 +16,7 @@ export interface ArabicMathJaxConfig {
     flipClass: string;
     isArabicPage: () => boolean;
     autoArabic: boolean;
+    mathFont: string;
     digits: Record<string, string>;
     decimalMark: string;
     thousandsMark: string;
@@ -34,6 +35,7 @@ export interface AutoSetupOptions {
     loadMathJax?: boolean;
     autoRender?: boolean;
     mathJaxUrl?: string;
+    mathFont?: string;
     target?: string | Element | Element[] | NodeListOf<Element>;
 }
 export declare function preprocess(tex: string, opts?: PreprocessOptions): string;
@@ -47,6 +49,8 @@ export declare function renderPage(opts?: PreprocessOptions & {
 export declare function configureMathJax(overrides?: Record<string, unknown>): Record<string, unknown>;
 export declare function loadMathJax(url?: string): Promise<void>;
 export declare function installAutoSetup(options?: AutoSetupOptions): void;
+export declare function setMathFont(fontFamily: string): void;
+export declare function applyMathFont(fontFamily?: string, target?: string | Element): void;
 export declare function injectStyles(): void;
 declare const ArabicMathJax: {
     version: string;
@@ -58,6 +62,8 @@ declare const ArabicMathJax: {
     configureMathJax: typeof configureMathJax;
     loadMathJax: typeof loadMathJax;
     installAutoSetup: typeof installAutoSetup;
+    setMathFont: typeof setMathFont;
+    applyMathFont: typeof applyMathFont;
     injectStyles: typeof injectStyles;
     getMathJaxConfig: typeof getMathJaxConfig;
     isArabicPage: () => boolean;

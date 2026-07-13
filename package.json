@@ -1,7 +1,19 @@
 {
   "name": "mathjax4arabic",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "Ahmed Almaghz",
+  "keywords": [
+    "mathjax",
+    "arabic",
+    "rtl",
+    "rendering",
+    "support"
+  ],
+  "homepage": "https://github.com/AhmedAlmaghz/mathjax4arabic",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AhmedAlmaghz/mathjax4arabic.git"
+  },
   "description": "Arabic preprocessing helpers and RTL rendering support for MathJax v4.",
   "type": "module",
   "license": "MIT",

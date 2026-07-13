@@ -62,6 +62,34 @@ const tex = ArabicMathJax.preprocess("x = 12", { forceArabic: true });
 - `renderPage(options)` لمعالجة الصفحة كاملة.
 - `configureMathJax(overrides)` لإنشاء إعداد MathJax جاهز مع تعديلات اختيارية.
 - `installAutoSetup(options)` لتفعيل التهيئة التلقائية يدوياً عند الحاجة.
+- `setMathFont(fontFamily)` لتغيير خط الرموز والمعادلات الرياضية في الصفحة.
+- `applyMathFont(fontFamily, target)` لتطبيق خط معين على الصفحة كلها أو على عنصر محدد.
+
+### اختيار خط رياضي متقدم
+
+الاستخدام الافتراضي يختار خطاً عربياً مناسباً تلقائياً. إذا أراد المستخدم تخصيص خط الرموز والمعادلات الرياضية، يمكنه فعل ذلك بإعداد اختياري متقدم:
+
+```html
+<script type="module">
+  import ArabicMathJax from "https://cdn.jsdelivr.net/npm/mathjax4arabic@1/dist/browser.js";
+
+  ArabicMathJax.setMathFont('"Amiri", "Times New Roman", serif');
+</script>
+```
+
+أو على عنصر محدد فقط:
+
+```js
+ArabicMathJax.applyMathFont('"Noto Naskh Arabic", serif', "#math-area");
+```
+
+وعند التهيئة اليدوية المتقدمة:
+
+```js
+ArabicMathJax.installAutoSetup({
+  mathFont: '"Amiri", "Noto Naskh Arabic", serif'
+});
+```
 
 ## أوامر TeX المدعومة
 

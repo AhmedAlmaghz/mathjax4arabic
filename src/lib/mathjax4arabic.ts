@@ -30,6 +30,7 @@ export interface ArabicMathJaxConfig {
   flipClass: string;
   isArabicPage: () => boolean;
   autoArabic: boolean;
+  mathFont: string;
   digits: Record<string, string>;
   decimalMark: string;
   thousandsMark: string;
@@ -43,6 +44,7 @@ const config: ArabicMathJaxConfig = {
   flipClass: FLIP_CLASS,
   isArabicPage: defaultIsArabicPage,
   autoArabic: true,
+  mathFont: '"Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif',
 
   digits: {
     "0": "٠", "1": "١", "2": "٢", "3": "٣", "4": "٤",
@@ -52,7 +54,7 @@ const config: ArabicMathJaxConfig = {
   thousandsMark: "\u066C",
 
   identifiers: {
-    a: "أ", b: "ب", c: "جـ", d: "د", e: "هـ",
+    a: "ا", b: "ب", c: "جـ", d: "د", e: "هـ",
     f: "ق", g: "جـ", h: "هـ", k: "ك", l: "ل",
     m: "م", n: "ن", r: "ر", t: "ت",
     x: "س", y: "ص", z: "ع",
@@ -69,11 +71,11 @@ const config: ArabicMathJaxConfig = {
     arccot: "قوس ظتا", arccsc: "قوس قتا", arcsec: "قوس قا",
     sinh: "جاز", cosh: "جتاز", tanh: "ظاز",
     coth: "ظتاز", sech: "قاز", csch: "قتاز",
-    log: "لغ", ln: "لو", lg: "لغ",
-    lim: "نهــا", limsup: "حد أعلى", liminf: "حد أدنى",
+    log: "لـغ", ln: "لـو", lg: "لغ",
+    lim: "نهـــا", limsup: "حد أعلى", liminf: "حد أدنى",
     max: "أقصى", min: "أدنى",
     sup: "حد أعلى", inf: "حد أدنى",
-    sum: "مجــ", prod: "جداء",
+    sum: "مجـــــ", prod: "جداء",
     exp: "أس", det: "محدد", dim: "بُعد",
     ker: "نواة", deg: "درجة", arg: "سعة",
     mod: "باقي", gcd: "ق.م.أ", lcm: "م.م.أ",
@@ -140,6 +142,7 @@ export interface AutoSetupOptions {
   loadMathJax?: boolean;
   autoRender?: boolean;
   mathJaxUrl?: string;
+  mathFont?: string;
   target?: string | Element | Element[] | NodeListOf<Element>;
 }
 
@@ -595,6 +598,8 @@ export function loadMathJax(url = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mm
 export function installAutoSetup(options: AutoSetupOptions = {}): void {
   if (typeof document === "undefined") return;
   injectStyles();
+  if (options.mathFont) setMathFont(options.mathFont);
+  else applyMathFont();
   configureMathJax();
 
   const load = options.loadMathJax !== false;
@@ -610,12 +615,32 @@ export function installAutoSetup(options: AutoSetupOptions = {}): void {
   });
 }
 
+export function setMathFont(fontFamily: string): void {
+  config.mathFont = fontFamily;
+  applyMathFont(fontFamily);
+}
+
+export function applyMathFont(fontFamily = config.mathFont, target?: string | Element): void {
+  if (typeof document === "undefined") return;
+  const elements = target
+    ? (typeof target === "string" ? Array.from(document.querySelectorAll<HTMLElement>(target)) : [target as HTMLElement])
+    : [document.documentElement];
+
+  for (const el of elements) {
+    el.style.setProperty("--mathjax4arabic-font", fontFamily);
+    el.classList.add("mathjax4arabic-font");
+  }
+}
+
 export function injectStyles(): void {
   if (typeof document === "undefined") return;
   if (document.querySelector("style[data-arabic-mathjax]")) return;
   const style = document.createElement("style");
   style.setAttribute("data-arabic-mathjax", "true");
   style.textContent = `
+:root {
+  --mathjax4arabic-font: ${config.mathFont};
+}
 .mjx-ar-flip {
   display: inline-block !important;
   transform: scaleX(-1);
@@ -623,6 +648,20 @@ export function injectStyles(): void {
 }
 html[lang^="ar"] mjx-container[display="true"] {
   direction: rtl;
+}
+.mathjax4arabic-font mjx-container,
+.mathjax4arabic-font mjx-container mjx-math,
+.mathjax4arabic-font mjx-container mjx-mi,
+.mathjax4arabic-font mjx-container mjx-mn,
+.mathjax4arabic-font mjx-container mjx-mo,
+.mathjax4arabic-font mjx-container mjx-mtext,
+mjx-container.mathjax4arabic-font,
+mjx-container.mathjax4arabic-font mjx-math,
+mjx-container.mathjax4arabic-font mjx-mi,
+mjx-container.mathjax4arabic-font mjx-mn,
+mjx-container.mathjax4arabic-font mjx-mo,
+mjx-container.mathjax4arabic-font mjx-mtext {
+  font-family: var(--mathjax4arabic-font) !important;
 }`;
   document.head.appendChild(style);
 }
@@ -637,6 +676,8 @@ const ArabicMathJax = {
   configureMathJax,
   loadMathJax,
   installAutoSetup,
+  setMathFont,
+  applyMathFont,
   injectStyles,
   getMathJaxConfig,
   isArabicPage: () => config.isArabicPage(),

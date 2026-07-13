@@ -62,7 +62,7 @@ describe("Arabic MathJax preprocessing", () => {
 
         expect(output).toContain("\\sqrt{");
         expect(output).toContain("\\text{ع}");
-        expect(output).toContain("\\text{أ}");
+        expect(output).toContain("\\text{ا}");
         expect(output).toContain("\\text{ب}");
         expect(output).not.toContain("a^");
         expect(output).not.toContain("b^");
@@ -74,7 +74,7 @@ describe("Arabic MathJax preprocessing", () => {
         expect(output).toContain("\\frac{");
         expect(output).toContain("\\text{د}");
         expect(output).toContain("\\text{س}");
-        expect(output).toContain("\\text{لو}");
+        expect(output).toContain("\\text{لـو}");
         expect(output).not.toContain("{d}");
         expect(output).not.toContain("{dx}");
         expect(output).not.toContain("{x}");
@@ -118,5 +118,11 @@ describe("Arabic MathJax preprocessing", () => {
         expect(typeof ArabicMathJax.installAutoSetup).toBe("function");
         expect(typeof ArabicMathJax.renderPage).toBe("function");
         expect(typeof ArabicMathJax.typesetArabic).toBe("function");
+    });
+
+    it("exposes advanced math font controls", () => {
+        expect(ArabicMathJax.config.mathFont).toContain("Amiri");
+        expect(typeof ArabicMathJax.setMathFont).toBe("function");
+        expect(typeof ArabicMathJax.applyMathFont).toBe("function");
     });
 });

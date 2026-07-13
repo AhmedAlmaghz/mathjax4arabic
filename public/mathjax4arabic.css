@@ -36,8 +36,21 @@ html[lang^="ar"] mjx-container[display="true"],
    for unmapped/Arabic characters. */
 :root {
   --arabic-mathjax-font: "Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif;
+  --mathjax4arabic-font: var(--arabic-mathjax-font);
 }
 
-.arabic-mathjax-font mjx-container {
-  font-family: var(--arabic-mathjax-font);
+.arabic-mathjax-font mjx-container,
+.mathjax4arabic-font mjx-container,
+.mathjax4arabic-font mjx-container mjx-math,
+.mathjax4arabic-font mjx-container mjx-mi,
+.mathjax4arabic-font mjx-container mjx-mn,
+.mathjax4arabic-font mjx-container mjx-mo,
+.mathjax4arabic-font mjx-container mjx-mtext,
+mjx-container.mathjax4arabic-font,
+mjx-container.mathjax4arabic-font mjx-math,
+mjx-container.mathjax4arabic-font mjx-mi,
+mjx-container.mathjax4arabic-font mjx-mn,
+mjx-container.mathjax4arabic-font mjx-mo,
+mjx-container.mathjax4arabic-font mjx-mtext {
+  font-family: var(--mathjax4arabic-font) !important;
 }
