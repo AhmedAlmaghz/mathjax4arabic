@@ -122,6 +122,26 @@ export const PLAYGROUND_EXAMPLES: TexExample[] = [
     tex: "\\transt{\\text{where } x > 0}{حيث س > ٠}",
     description: "\\transt — النص العربي لا يُقلب"
   },
+  {
+    id: "overline",
+    label: "المرافق",
+    tex: "\\overline{z}=a-bi",
+    description: "مرافق العدد المركب"
+  },
+  {
+    id: "mathbb",
+    label: "حرف كبير",
+    tex: "\\mathbb{\\text{R}}",
+    description: "رموز المجموعات الكبيرة"
+  },
+  {
+    id: "bold",
+    label: "نص عريض",
+    tex: "\\textbf{\\text{A}}",
+    description: "نص عريض"
+  },
+
+
 ];
 
 export const DEFAULT_TEX = "a x^2 + b x + c = 0";
