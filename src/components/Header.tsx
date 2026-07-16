@@ -15,7 +15,7 @@ export default function Header() {
             ج
           </span>
           <span className="flex flex-col leading-tight">
-            <span className="font-bold text-white">Arabic MathJax</span>
+            <span className="font-bold text-white">MathJax4Arabic</span>
             <span className="text-xs text-slate-400">إصدار متوافق مع MathJax v4.1.3</span>
           </span>
         </a>
