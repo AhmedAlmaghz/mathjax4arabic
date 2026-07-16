@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
-    outDir: "docs",
+    outDir: "demo-dist",
   },
   resolve: {
     alias: {
